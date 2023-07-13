@@ -16,6 +16,10 @@ app.post("/signup", async (req, res) => {
   const { email, password } = req.body;
   console.log(email, password);
   try {
+    const existingUser = await UserModel.findOne({ email });
+    if (existingUser) {
+      return res.status(401).json({ error: "Email already exists" });
+    }
     const user = { email, password };
     const newUser = new UserModel(user);
     await newUser.save();
@@ -32,7 +36,7 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
-    let data = await UserModel.findOne({ email: email });
+    let data = await UserModel.findOne({ email: email, password: password });
     if (data?.email == email && data?.password == password) {
       res.status(200).json({ data });
     } else {
