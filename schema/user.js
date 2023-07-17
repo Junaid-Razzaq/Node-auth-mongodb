@@ -9,6 +9,14 @@ const usersLogin = new mongoose.Schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    required: true,
+  },
+  forgotpassword: {
+    type: Number,
+    required: false,
+  },
 });
 
 const users = mongoose.model("users", usersLogin);
